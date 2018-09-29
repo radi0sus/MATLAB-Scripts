@@ -2,6 +2,7 @@
 % stick spectra + Gaussian, Lorentzian & Pseudo-Voigt line broadening
 % nm or cm^-1^ scale
 % several options
+% spectrum will be saved in the orca.out folder
 
 clear all;
 
