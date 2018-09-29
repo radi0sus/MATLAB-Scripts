@@ -1,6 +1,7 @@
 % plots IR spectrum from orca.out
 % stick spectra + Gaussian, Lorentzian & Pseudo-Voigt line broadening
 % several options
+% spectrum will be saved in the orca.out folder
 
 clear all;
 
