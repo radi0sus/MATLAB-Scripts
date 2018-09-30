@@ -1,7 +1,5 @@
 # MATLAB-Scripts
-Several MATLAB scripts
-
-tested with R2018b (win_x64); 
+Several MATLAB scripts; tested with R2018b (win_x64)
 
 ### ORCA, an ab initio, DFT and semiempirical SCF-MO package
 
