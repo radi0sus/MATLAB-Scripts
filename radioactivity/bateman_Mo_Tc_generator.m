@@ -48,7 +48,7 @@ A2 = subs(A2,[N0*l1],[A0]); % substitute N0*l1 with A0
 l1_v = log(2)/65.94; % l for Mo-99;  l=log(2)/t(1/2)
 l2_v = log(2)/6.01;  % l for Tc-99m; l=log(2)/t(1/2)
 A0_v = 15;           % Mo-99 activity at t=0 in MBq or KBq or Bq....
-br1_v=0.86;          % branching ratio: only 86% Mo-99 decays to Tc-99m
+br1_v = 0.86;        % branching ratio: only 86% Mo-99 decays to Tc-99m
 
 et_max = 240;        % elution time maximum /h
 et_int = 12;         % elution time interval /h
@@ -84,7 +84,6 @@ end
 %plot options
 ax2=gca;
 ax2.Title.String = {'Tc-99m generator','Mo-99 \rightarrow Tc-99m'};
-%ax2.YScale='log';
 ax2.YLim=[0 A0_v];
 ax2.YTick=[0:1:A0_v];
 ax2.XLim=[0 240];
