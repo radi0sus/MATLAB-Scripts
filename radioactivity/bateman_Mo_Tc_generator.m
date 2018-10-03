@@ -1,7 +1,7 @@
 % Calculation of radioactive decay chains (mother -> daugther -> granddaughter .....): 
 % 1 -> 2 -> 3 -> 4 -> .....using the Bateman equation.
 % +++++++++++++++++++++++++++++++++++++++++++++++++++++++
-% Characteristics of a Tc-99m generater
+% Characteristics of a Tc-99m generator
 % -------------------------------------------------------
 % Mo-99 (t(1/2))=66 h) -> Tc-99m (t(1/2)=6 h)
 % +++++++++++++++++++++++++++++++++++++++++++++++++++++++
