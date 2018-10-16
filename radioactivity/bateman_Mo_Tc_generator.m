@@ -60,7 +60,7 @@ A2s = subs(A2, [l1,l2,A0,r12], [l1_v,l2_v,A0_v,r12_v]);
 f1 = symfun(A2s,et);      % plot activity from et to t
 f2 = symfun(A2s,[et t]);  % obtain maximum Tc-99m activity at et + t
 
-%plot section
+% plot section
 hold on;
 n1=fplot(A1s);   % plot the decay of Mo-99
 n2=fplot(f1(0)); % plot the decay of Tc-99m without elution, et = 0
@@ -70,7 +70,7 @@ n2.Color='g';
 
 % plot decay of Tc-99m after each elution interval
 if et_int+et_p == 0 
-    % elution starts after et_s with no further elutionof Tc-99m
+    % elution starts after et_s with no further elution of Tc-99m
     n3=fplot(f1(et_s));
     n3.Color='r';
 else
