@@ -26,7 +26,6 @@
 % A = l*N
 % A0 = l1*N0
 % rxy = branching ratio 
-% et = elution time
 
 clear all;
 
@@ -65,11 +64,11 @@ A4 = A4 / A0; % divide by A0 to get relative activities
 A5 = A5 / A0; % divide by A0 to get relative activities
 A6 = A6 / A0; % divide by A0 to get relative activities
 
-A2 = simplify(A2,'Steps',40); % simplify and divide by A0 to get relative activities
-A3 = simplify(A3,'Steps',40); % simplify and divide by A0 to get relative activities
-A4 = simplify(A4,'Steps',40); % simplify and divide by A0 to get relative activities
-A5 = simplify(A5,'Steps',40); % simplify and divide by A0 to get relative activities
-A6 = simplify(A6,'Steps',40); % simplify and divide by A0 to get relative activities
+A2 = simplify(A2,'Steps',40); % simplify 
+A3 = simplify(A3,'Steps',40); % simplify
+A4 = simplify(A4,'Steps',40); % simplify 
+A5 = simplify(A5,'Steps',40); % simplify 
+A6 = simplify(A6,'Steps',40); % simplify 
 
 % -----------------------------------------------------------------------
 % values to change
@@ -102,7 +101,7 @@ fplot(A4s,'Color','yellow');
 fplot(A5s,'Color','magenta');
 fplot(A6s,'Color','black');
 fplot(A_sum,'Color','black','LineStyle','--');
-hold off
+hold off;
 
 % plot options
 ax=gca;
