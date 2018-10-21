@@ -62,12 +62,12 @@ N0 = 1;                   % The script calculates relative values.
 % easily see how the matrix is build up.
 %
 % rows of the lambda matrix [AM]
-dN1 = [-l1   0   0   0      0    0]; % dN1(t)/dt = -l1*N1; decay of 1
-dN2 = [ l1 -l2   0   0      0    0]; % dN2(t)/dt =  l1*N1(t)-l2*N2(t); formation of 2 from 1 and decay of 2
-dN3 = [  0  l2 -l3   0      0    0]; % dN3(t)/dt =  l2*N2(t)-l3*N3(t); formation of 3 from 2 and decay of 3
-dN4 = [  0   0  l3 -l4      0    0]; % dN4(t)/dt =  l3*N3(t)-l4*N4(t); formation of 4 from 3 and decay of 4
+dN1 = [-l1   0   0   0       0   0]; % dN1(t)/dt = -l1*N1; decay of 1
+dN2 = [ l1 -l2   0   0       0   0]; % dN2(t)/dt =  l1*N1(t)-l2*N2(t); formation of 2 from 1 and decay of 2
+dN3 = [  0  l2 -l3   0       0   0]; % dN3(t)/dt =  l2*N2(t)-l3*N3(t); formation of 3 from 2 and decay of 3
+dN4 = [  0   0  l3 -l4       0   0]; % dN4(t)/dt =  l3*N3(t)-l4*N4(t); formation of 4 from 3 and decay of 4
 dN5 = [  0   0   0  r41*l4 -l5   0]; % dN5(t)/dt =  r41*l4*N4(t)-l5*N5(t); formation of 5 from 4 * branching and decay of 5
-dN6 = [  0   0   0  r42*l4  0  -l6]; % dN6(t)/dt =  r42*l4*N4(t)-l6*N6(t); formation of 6 from 4 * branching and decay of 6
+dN6 = [  0   0   0  r42*l4   0 -l6]; % dN6(t)/dt =  r42*l4*N4(t)-l6*N6(t); formation of 6 from 4 * branching and decay of 6
 %
 % the lambda matrix [AM]
 AM = [dN1; dN2; dN3; dN4; dN5; dN6];
