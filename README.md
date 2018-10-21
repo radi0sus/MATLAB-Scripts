@@ -15,3 +15,6 @@ Several MATLAB scripts; tested with R2018b (win_x64)
 * _bateman_secular_Cs_Ba.m_: Secular equilibrium Ca-137 -> Ba-137m
 * _bateman_transient_Mo_Tc.m_: Transient equilibrium Mo-99 -> Tc-99m
 * _branch_K_Ca_Ar_dating.m_: Branched decay; K-Ar dating
+
+#### Radioactive decay, examples for the use of the matrix method (symbolic math toolbox needed)
+* _matrix_Rn220.m_: Rn-220 decay chain
