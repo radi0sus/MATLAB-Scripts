@@ -79,7 +79,7 @@ N0_vec = [N0; 0; 0; 0; 0; 0];
 [AM_vec,AM_eval]=eig(AM);
 
 % create a diagonal matrix [L] with exp(AM_eval*t) which is exp(-lamda*t)
-syms t 
+syms t; 
 L = expm(AM_eval*t);
 
 % [N] = eigenvector of [AM] * [L] * eigenvector of [AM]^-1^ * [N0]
