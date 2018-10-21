@@ -61,7 +61,7 @@ N0 = 1;                   % The script calculates relative values.
 % If you formulate the differential equations of the decay chain you can 
 % easily see how the matrix is build up.
 %
-% rows of the lamba matrix [AM]
+% rows of the lambda matrix [AM]
 dN1 = [-l1   0   0   0      0    0]; % dN1(t)/dt = -l1*N1; decay of 1
 dN2 = [ l1 -l2   0   0      0    0]; % dN2(t)/dt =  l1*N1(t)-l2*N2(t); formation of 2 from 1 and decay of 2
 dN3 = [  0  l2 -l3   0      0    0]; % dN3(t)/dt =  l2*N2(t)-l3*N3(t); formation of 3 from 2 and decay of 3
