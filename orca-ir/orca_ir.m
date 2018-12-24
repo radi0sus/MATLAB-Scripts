@@ -1,27 +1,29 @@
 % plots IR spectrum from orca.out
 % stick spectra + Gaussian, Lorentzian & Pseudo-Voigt line broadening
 % several options
-% spectrum will be saved in the orca.out folder
 
 clear all;
 
 % options
-w = 15;                 % peak broadening
-gaussian_ls = 1;        % Gaussian line shape
-lorentzian_ls = 0;      % Lorentzian line shape
-pvoigt_ls = 0;          % Pseudo-Voigt line shape
-gauss_area = 1;         % area plot for Gaussian - else line
-lorentz_area = 0;       % area plot for Lorentzian - else line
-pvoigt_area = 0;        % area plot for Pseudo-Voigt - else line
-gauss_single = 0;       % plot Gaussian for every single peak
-lorentz_single = 0;     % plot Lorentzian for every single peak
-pvoigt_single = 0;      % plot Pseudo-Voigt for every single peak
-transmission_style = 0; % plot transmission spectra
-hiwn_to_lown = 1;       % spectrum starts from high wavenumber
-peak_detection = 1;     % turn peak detection on
-peak_treshold = 100;    % peak detection treshold
-peak_font_size = 7;     % font size for detected peaks
-resolution = 300;       % resolution of the picture in dpi        
+w = 15;                         % peak broadening
+gaussian_ls = 1;                % Gaussian line shape
+lorentzian_ls = 0;              % Lorentzian line shape
+pvoigt_ls = 0;                  % Pseudo-Voigt line shape
+gauss_area = 1;                 % area plot for Gaussian - else line
+lorentz_area = 0;               % area plot for Lorentzian - else line
+pvoigt_area = 0;                % area plot for Pseudo-Voigt - else line
+gauss_single = 0;               % plot Gaussian for every single peak
+lorentz_single = 0;             % plot Lorentzian for every single peak
+pvoigt_single = 0;              % plot Pseudo-Voigt for every single peak
+transmission_style = 0;         % plot transmission spectra
+hiwn_to_lown = 1;               % spectrum starts from high wavenumber
+peak_detection = 1;             % turn peak detection on
+peak_treshold = 1;              % peak detection treshold
+peak_font_size = 5;             % font size for detected peaks 
+area_color = [0.3 0.3 0.3];     % area color
+stick_color = [0 0 0];          % stick color
+spectrum_title = 'IR spectrum'; % spectrum title
+resolution = 300;               % resolution of the picture in dpi 
 % end options
 
 extracted_IR_data={};
@@ -31,7 +33,7 @@ extracted_IR_data={};
 if isequal(orca_out_file,0)
    disp('Select an ORCA output file');
 else
-   orca_out_file_ID=fopen(orca_out_file,'r');
+   orca_out_file_ID=fopen(fullfile(path,orca_out_file),'r');
 end
 
 % look for string 'IR SPECTRUM' in orca.out
@@ -49,7 +51,7 @@ else
     % extract lines with IR data
     % skip next 4 lines
     for nlines_2_skip = 1:4
-        fgetl(orca_out_file_ID);
+       fgetl(orca_out_file_ID);
     end
     % read IR data 
     line = fgetl(orca_out_file_ID);
@@ -88,7 +90,7 @@ z=0:1:max(x)+250;       % x limits for gaussian, lorentzian or pseudo-voigt
 if gauss_single
     for i = 1 : numel(x)
         ar=area(gauss(y(i),z,x(i),w));
-        ar.FaceColor=[0.3 0.3 0.3];
+        ar.FaceColor= area_color;
         ar.EdgeColor = [0 0 0];
         ar.FaceAlpha = 0.2;
         ar.EdgeAlpha = 0.6;
@@ -99,7 +101,7 @@ end
 if lorentz_single
     for i = 1 : numel(x)
         ar=area(lorentz(y(i),z,x(i),w));
-        ar.FaceColor=[0.3 0.3 0.3];
+        ar.FaceColor= area_color;
         ar.EdgeColor = [0 0 0];
         ar.FaceAlpha = 0.2;
         ar.EdgeAlpha = 0.6;
@@ -110,7 +112,7 @@ end
 if pvoigt_single
     for i = 1 : numel(x)
         ar=area(pvoigt(y(i),z,x(i),w));
-        ar.FaceColor=[0.3 0.3 0.3];
+        ar.FaceColor= area_color;
         ar.EdgeColor = [0 0 0];
         ar.FaceAlpha = 0.2;
         ar.EdgeAlpha = 0.6;
@@ -125,7 +127,7 @@ if gaussian_ls
     % area or line plot
     if gauss_area
         ar=area(gauss_sum);
-        ar.FaceColor=[0.3 0.3 0.3];
+        ar.FaceColor= area_color;
         ar.EdgeColor = [0 0 0];
         ar.FaceAlpha = 0.2;
         ar.EdgeAlpha = 0.6;
@@ -162,7 +164,7 @@ if lorentzian_ls
     % area or line plot
     if lorentz_area
         ar=area(lorentz_sum);
-        ar.FaceColor=[0.3 0.3 0.3];
+        ar.FaceColor= area_color;
         ar.EdgeColor = [0 0 0];
         ar.FaceAlpha = 0.2;
         ar.EdgeAlpha = 0.6;
@@ -198,7 +200,7 @@ if pvoigt_ls
     % area or line plot
     if pvoigt_area
         ar=area(pvoigt_sum);
-        ar.FaceColor=[0.3 0.3 0.3];
+        ar.FaceColor= area_color;
         ar.EdgeColor = [0 0 0];
         ar.FaceAlpha = 0.2;
         ar.EdgeAlpha = 0.6;
@@ -229,7 +231,7 @@ end
 % plot stick spectrum
 st=stem(x,y);
 st.Marker='none';
-st.Color=[0 0 0];
+st.Color = stick_color;
 
 % plot a box 
 if gaussian_ls && lorentzian_ls == 0 && pvoigt_ls == 0
@@ -289,7 +291,7 @@ box off;
 %grid on;
 %grid minor;
 set(gca,'XMinorTick','on');
-title('IR spectrum');
+title(spectrum_title);
 xlabel(['wavenumber / cm^{' char(8211) '1}']);
 ylabel('intensity');
 set(gca,'ytick',[])
