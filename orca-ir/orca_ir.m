@@ -31,7 +31,8 @@ extracted_IR_data={};
 % open file and get ID
 [orca_out_file, path] = uigetfile('.out','Select an ORCA output file');
 if isequal(orca_out_file,0)
-   disp('Select an ORCA output file');
+   error('Select an ORCA output file!');
+   return;
 else
    orca_out_file_ID=fopen(fullfile(path,orca_out_file),'r');
 end
@@ -294,6 +295,7 @@ set(gca,'XMinorTick','on');
 title(spectrum_title);
 xlabel(['wavenumber / cm^{' char(8211) '1}']);
 ylabel('intensity');
+%ylabel('activity');
 set(gca,'ytick',[])
 set(gca,'TickDir','out');
 %set(gca,'linewidth',1);
