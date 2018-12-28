@@ -6,26 +6,29 @@
 clear all;
 
 % options
-tedp = 1;                % 1 for TRANSITION ELECTRIC DIPOLE MOMENTS, 0 for TRANSITION VELOCITY DIPOLE MOMENTS
-w_nm = 20;               % peak broadening for nm scale
-w_wn = 2000;             % peak broadening for wavenumber scale
-add_to_max_x_nm = 0;     % expand x plus ... nm (-... decrease)
-add_to_max_x_wn = 12000; % expand x plus ... cm^-1^ (-... decrease)
-nm = 1;                  % 1 for wavelength (nm), 0 for wavenumber (cm^-1^)
-gaussian_ls = 1;         % Gaussian line shape
-lorentzian_ls = 0;       % Lorentzian line shape
-pvoigt_ls = 0;           % Pseudo-Voigt line shape
-gauss_area = 1;          % area plot for Gaussian - else line
-lorentz_area = 0;        % area plot for Lorentzian - else line
-pvoigt_area = 0;         % area plot for Pseudo-Voigt - else line
-gauss_single = 0;        % plot Gaussian for every single peak
-lorentz_single = 0;      % plot Lorentzian for every single peak
-pvoigt_single = 0;       % plot Pseudo-Voigt for every single peak
-hiwn_to_lown = 1;        % spectrum starts from high wavenumber
-peak_detection = 1;      % turn peak detection on
-peak_treshold = 0.001;   % peak detection treshold
-peak_font_size = 7;      % font size for detected peaks
-resolution = 300;        % resolution of the picture in dpi        
+tedp = 1;                                % 1 for TRANSITION ELECTRIC DIPOLE MOMENTS, 0 for TRANSITION VELOCITY DIPOLE MOMENTS
+w_nm = 20;                               % peak broadening for nm scale
+w_wn = 2000;                             % peak broadening for wavenumber scale
+start_x_nm = 0;                          % start spectrum at ... nm
+start_x_wn = 0;                          % start spectrum at ... cm^-1^ 
+add_to_max_x_nm = 0;                     % expand x plus ... nm (-... decrease)
+add_to_max_x_wn = 12000;                 % expand x plus ... cm^-1^ (-... decrease)
+nm = 1;                                  % 1 for wavelength (nm), 0 for wavenumber (cm^-1^)
+gaussian_ls = 1;                         % Gaussian line shape
+lorentzian_ls = 0;                       % Lorentzian line shape
+pvoigt_ls = 0;                           % Pseudo-Voigt line shape
+gauss_area = 1;                          % area plot for Gaussian - else line
+lorentz_area = 0;                        % area plot for Lorentzian - else line
+pvoigt_area = 0;                         % area plot for Pseudo-Voigt - else line
+gauss_single = 0;                        % plot Gaussian for every single peak
+lorentz_single = 0;                      % plot Lorentzian for every single peak
+pvoigt_single = 0;                       % plot Pseudo-Voigt for every single peak
+hiwn_to_lown = 1;                        % spectrum starts from high wavenumber
+peak_detection = 1;                      % turn peak detection on
+peak_treshold = 0.001;                   % peak detection treshold
+peak_font_size = 7;                      % font size for detected peaks
+spectrum_title = 'Absorption spectrum';  % spectrum title
+resolution = 300;                        % resolution of the picture in dpi 
 % end options
 
 extracted_uv_data={};
@@ -79,14 +82,23 @@ y = [extracted_uv_data{:,4}];    % y (intesities) from orca.out
 if nm
     x = x_nm;
     w = w_nm;
-    add_to_max_x=add_to_max_x_nm;
+    add_to_max_x = add_to_max_x_nm;
+    start_x = start_x_nm;
 else
     x = x_wn;
     w = w_wn;
-    add_to_max_x=add_to_max_x_wn;
+    add_to_max_x = add_to_max_x_wn;
+    start_x = start_x_wn;
 end
 
-figure('Name','Absorption Spectrum');
+% x_0 should not be lt 0 or exceed x_max 
+if start_x >= max(x)
+    start_x = 0;
+elseif start_x < 0
+    start_x = 0;
+end
+
+figure('Name','Absorption spectrum');
 
 hold on; % several plots in one figure
 
@@ -95,7 +107,7 @@ if hiwn_to_lown && nm ~= 1
     set(gca,'XDir','reverse'); 
 end
 
-xlim([0 max(x)+add_to_max_x]); % x plot limits
+xlim([start_x max(x)+add_to_max_x]); % x plot limits
 z=0:1:max(x)+add_to_max_x;     % x limits for gaussian, lorentzian or pseudo-voigt
 
 % plot gaussian for every single peak
@@ -287,7 +299,7 @@ box off;
 %grid on;
 %grid minor;
 set(gca,'XMinorTick','on');
-title('Absorption spectrum');
+title(spectrum_title);
 if nm
     xlabel(['wavelength / nm']);
 else
