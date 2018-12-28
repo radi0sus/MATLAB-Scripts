@@ -2,31 +2,30 @@
 % stick spectra + Gaussian, Lorentzian & Pseudo-Voigt line broadening
 % nm or cm^-1^ scale
 % several options
-% spectrum will be saved in the orca.out folder
 
 clear all;
 
 % options
-tedp = 1;               % 1 for TRANSITION ELECTRIC DIPOLE MOMENTS, 0 for TRANSITION VELOCITY DIPOLE MOMENTS
-w_nm = 100;             % peak broadening for nm scale
-w_wn = 2000;            % peak broadening for wavenumber scale
-add_to_max_x_nm=50;     % expand x plus ... nm (-... decrease)
-add_to_max_x_wn=12000;  % expand x plus ... cm^-1^ (-... decrease)
-nm = 1;                 % 1 for wavelength (nm), 0 for wavenumber (cm^-1^)
-gaussian_ls = 1;        % Gaussian line shape
-lorentzian_ls = 0;      % Lorentzian line shape
-pvoigt_ls = 0;          % Pseudo-Voigt line shape
-gauss_area = 1;         % area plot for Gaussian - else line
-lorentz_area = 0;       % area plot for Lorentzian - else line
-pvoigt_area = 0;        % area plot for Pseudo-Voigt - else line
-gauss_single = 0;       % plot Gaussian for every single peak
-lorentz_single = 0;     % plot Lorentzian for every single peak
-pvoigt_single = 0;      % plot Pseudo-Voigt for every single peak
-hiwn_to_lown = 1;       % spectrum starts from high wavenumber
-peak_detection = 1;     % turn peak detection on
-peak_treshold = 0.01;   % peak detection treshold
-peak_font_size = 7;     % font size for detected peaks
-resolution = 300;       % resolution of the picture in dpi        
+tedp = 1;                % 1 for TRANSITION ELECTRIC DIPOLE MOMENTS, 0 for TRANSITION VELOCITY DIPOLE MOMENTS
+w_nm = 20;               % peak broadening for nm scale
+w_wn = 2000;             % peak broadening for wavenumber scale
+add_to_max_x_nm = 0;     % expand x plus ... nm (-... decrease)
+add_to_max_x_wn = 12000; % expand x plus ... cm^-1^ (-... decrease)
+nm = 1;                  % 1 for wavelength (nm), 0 for wavenumber (cm^-1^)
+gaussian_ls = 1;         % Gaussian line shape
+lorentzian_ls = 0;       % Lorentzian line shape
+pvoigt_ls = 0;           % Pseudo-Voigt line shape
+gauss_area = 1;          % area plot for Gaussian - else line
+lorentz_area = 0;        % area plot for Lorentzian - else line
+pvoigt_area = 0;         % area plot for Pseudo-Voigt - else line
+gauss_single = 0;        % plot Gaussian for every single peak
+lorentz_single = 0;      % plot Lorentzian for every single peak
+pvoigt_single = 0;       % plot Pseudo-Voigt for every single peak
+hiwn_to_lown = 1;        % spectrum starts from high wavenumber
+peak_detection = 1;      % turn peak detection on
+peak_treshold = 0.001;   % peak detection treshold
+peak_font_size = 7;      % font size for detected peaks
+resolution = 300;        % resolution of the picture in dpi        
 % end options
 
 extracted_uv_data={};
@@ -34,9 +33,10 @@ extracted_uv_data={};
 % open file and get ID
 [orca_out_file, path] = uigetfile('.out','Select an ORCA output file');
 if isequal(orca_out_file,0)
-   disp('Select an ORCA output file');
+   error('Select an ORCA output file!');
+   return;
 else
-   orca_out_file_ID=fopen(orca_out_file,'r');
+   orca_out_file_ID=fopen(fullfile(path,orca_out_file),'r');
 end
 
 % look for string 'ABSORPTION SPECTRUM' in orca.out
