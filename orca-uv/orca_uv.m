@@ -92,10 +92,8 @@ else
 end
 
 % x_0 should not be lt 0 or exceed x_max 
-if start_x >= max(x)
-    start_x = 0;
-elseif start_x < 0
-    start_x = 0;
+if start_x >= max(x) || start_x == 0
+    start_x = 0;    
 end
 
 figure('Name','Absorption spectrum');
