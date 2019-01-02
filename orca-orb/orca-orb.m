@@ -32,7 +32,7 @@
 % example: orbitals_to_analyze=50
 %          The orbital number 50 will be analyzed
 %
-% Number:Number = analyze orbital with the given range
+% Number:Number = analyze orbitals within the given range
 % example: orbitals_to_analyze=0:50
 %          Every orbital in the range from 0 to 50 will be analyzed.
 %
