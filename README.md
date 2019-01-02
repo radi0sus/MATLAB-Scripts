@@ -5,7 +5,7 @@ Several MATLAB scripts; tested with R2018b (win_x64)
 
 * _orca_ir.m_: plot ir spectrum from orca.out (no additional toolboxes needed)
 * _orca_uv.m_: plot absortion spectrum from orca.out (no additional toolboxes needed)
-* _orca_orb.m_: analyze orbitasl from orca.out (no additional toolboxes needed)
+* _orca_orb.m_: analyze orbitals from orca.out (no additional toolboxes needed)
 
 #### Radioactive decay, examples for the use of the Bateman equation (symbolic math toolbox needed)
 
