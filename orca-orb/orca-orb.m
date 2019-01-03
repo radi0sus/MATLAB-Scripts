@@ -257,15 +257,27 @@ diary(diaryname);
 
 fprintf('-------------------------------------------------------------------------------\n');
 fprintf('orbital analysis of %s\n',orca_out_file);
-fprintf('total no. of orbitals (without beta orbitals): %d\n',tot_nr_orb-1);
+if spin_down_detected
+    fprintf('total no. of orbitals: %d\n',(tot_nr_orb-1)*2);
+else
+    fprintf('total no. of orbitals: %d\n',tot_nr_orb-1);
+end
 fprintf('HOMO no.: %d\n',homo_nr-1);
 if orbitals_to_analyze == 'all'
     fprintf('orbitals to analyze: %d...%d\n',0,loop_end);
 else
     fprintf('orbitals to analyze: %d...%d\n',loop_start,loop_end);
 end
-fprintf('beta orbitals detected: %d\n',spin_down_detected);
-fprintf('beta orbitals included: %d\n',beta_orbitals);
+if spin_down_detected
+    fprintf('beta orbitals detected: yes\n');
+else
+    fprintf('beta orbitals detected: no\n');
+end
+if beta_orbitals && spin_down_detected
+    fprintf('beta orbitals included: yes\n');
+else
+    fprintf('beta orbitals included: no\n');
+end
 fprintf('threshold for printing orbitals (%%): %d\n',threshold);
 fprintf('-------------------------------------------------------------------------------\n');
 fprintf(' \n');
