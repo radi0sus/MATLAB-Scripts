@@ -67,7 +67,8 @@ clear all;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% options
 orbitals_to_analyze = 'HOMO+-5';
-% orbitals_to_analyze = 0:5;
+%orbitals_to_analyze = 0:10;
+%orbitals_to_analyze = 'all';
 threshold = 5;
 beta_orbitals = 1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end options
@@ -235,13 +236,13 @@ fclose(orca_out_file_ID);
 % check options, which orbitals should be printed
 if strncmp(orbitals_to_analyze,'HOMO+-',6)
     orbitals_to_analyze = str2num(orbitals_to_analyze(7:end));
-    loop_start = homo_nr - orbitals_to_analyze;
-    loop_end = homo_nr + orbitals_to_analyze;
+    loop_start = (homo_nr-1)- orbitals_to_analyze;
+    loop_end = (homo_nr-1) + orbitals_to_analyze;
 elseif isnumeric(orbitals_to_analyze)
     loop_start = orbitals_to_analyze(1);
     loop_end = orbitals_to_analyze(end);
 elseif strncmp(orbitals_to_analyze,'all',3)
-    loop_start =1;
+    loop_start = 1;
     loop_end = tot_nr_orb-1;
 else
     error('Keyword not recognized!');
@@ -253,6 +254,21 @@ diaryname=[path 'orb-analysis.txt'];
 delete(diaryname);     % delete old diary
 feature('HotLinks',0); % better readability of the output file
 diary(diaryname);
+
+fprintf('-------------------------------------------------------------------------------\n');
+fprintf('orbital analysis of %s\n',orca_out_file);
+fprintf('total no. of orbitals (without beta orbitals): %d\n',tot_nr_orb-1);
+fprintf('HOMO no.: %d\n',homo_nr-1);
+if orbitals_to_analyze == 'all'
+    fprintf('orbitals to analyze: %d...%d\n',0,loop_end);
+else
+    fprintf('orbitals to analyze: %d...%d\n',loop_start,loop_end);
+end
+fprintf('beta orbitals detected: %d\n',spin_down_detected);
+fprintf('beta orbitals included: %d\n',beta_orbitals);
+fprintf('threshold for printing orbitals (%%): %d\n',threshold);
+fprintf('-------------------------------------------------------------------------------\n');
+fprintf(' \n');
 
 for i = loop_start:loop_end
     % check if range of orbitals is ok
