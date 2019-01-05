@@ -82,7 +82,9 @@ k = 1;
 l = 0;
 spin_down_detected = 0;
 Thcomp=[];
+Thecomp=[];
 Thbcomp=[];
+Thbecomp=[];
 hashmark=[];
 % end variables
 
@@ -313,8 +315,8 @@ for i = loop_start:loop_end
     Thmcomp = addvars(Thmcomp,hashmark,'After','sum_aX');
     Thmcomp = removevars(Thmcomp,'GroupCount');
     Thmcomp = Thmcomp(Thmcomp{:,5} > threshold,:);
-    Thmcomp = [Thmcomp;{"","","","","",""}];
-    Thcomp = [Thcomp; Thmcomp];
+    Thcomp = [Thcomp;{"","","","","",""};Thmcomp];
+    Thecomp = [Thecomp;Thmcomp];
     hashmark=[];
     %%%
     % this tables will be finally printed in the output file
@@ -373,8 +375,8 @@ if beta_orbitals && spin_down_detected
         Thmcomp = addvars(Thmcomp,hashmark,'After','sum_aX');
         Thmcomp = removevars(Thmcomp,'GroupCount');
         Thmcomp = Thmcomp(Thmcomp{:,5} > threshold,:);
-        Thmcomp = [Thmcomp;{"","","","","",""}];
-        Thbcomp = [Thbcomp; Thmcomp];
+        Thbcomp = [Thbcomp;{"","","","","",""};Thmcomp];
+        Thbecomp = [Thbecomp;Thmcomp];
         hashmark=[];
         %%%
         % this tables will be finally printed in the output file
@@ -397,43 +399,45 @@ if beta_orbitals && spin_down_detected
     end
 end
 %%%
-Thcomp.Properties.VariableNames={'No', 'Occ', 'Energy', 'Element', 'Cntrb','Cntrb_X'};
+Thcomp.Properties.VariableNames={'No', 'Occ', 'Orbital_Energy', 'Element', 'Cntrb','Cntrb_X'};
+Thcomp = movevars(Thcomp,{'Orbital_Energy'},'After','Cntrb_X');
 fprintf(fID,'*******************************************************************************\n');
 fprintf(fID,'summary of orbital contributions\n');
 fprintf(fID,'*******************************************************************************\n');
-a=[Thcomp.Properties.VariableNames;{'--','---','-----------','-------','------','----------'};Thcomp{:,:}];
+a=[Thcomp.Properties.VariableNames;{'--','---','-------','------','----------','--------------'};Thcomp{:,:}];
 fprintf(fID,' \n');
-fprintf(fID,'%+5s %+3s %+11s %+6s %+6s %s\n',a.');
+fprintf(fID,'%+5s %+3s %+7s %+6s %-10s %+14s\n',a.');
 fprintf(fID,' \n');
 fprintf(fID,'*******************************************************************************\n');
 fprintf(fID,'summary of element contributions to orbitals\n');
 fprintf(fID,'*******************************************************************************\n');
-Thcomp = Thcomp(Thcomp{:,1} ~= "",:);
-Thcomp = sortrows(Thcomp,[2 4 5],{'descend' 'ascend' 'ascend'});
-Thcomp = movevars(Thcomp,{'No','Occ','Energy'},'After','Cntrb_X');
-a=[Thcomp.Properties.VariableNames;{'-------','------','----------','--','---','----------'};Thcomp{:,:}];
+Thecomp.Properties.VariableNames={'No', 'Occ', 'Orbital_Energy', 'Element', 'Cntrb','Cntrb_X'};
+Thecomp = sortrows(Thecomp,[2 4 5],{'descend' 'ascend' 'ascend'});
+Thecomp = movevars(Thecomp,{'No','Occ','Orbital_Energy'},'After','Cntrb_X');
+a=[Thecomp.Properties.VariableNames;{'-------','------','----------','--','---','--------------'};Thecomp{:,:}];
 fprintf(fID,' \n');
-fprintf(fID,'%+7s %+6s %+10s %+4s %+3s %+11s\n',a.');
+fprintf(fID,'%+7s %+6s %-10s %+4s %+3s %+14s\n',a.');
 fprintf(fID,' \n');
 
 if beta_orbitals && spin_down_detected
-    Thbcomp.Properties.VariableNames={'No', 'Occ', 'Energy', 'Element', 'Cntrb','Cntrb_X'};
+    Thbcomp.Properties.VariableNames={'No', 'Occ', 'Orbital_Energy', 'Element', 'Cntrb','Cntrb_X'};
+    Thbcomp = movevars(Thcomp,{'Orbital_Energy'},'After','Cntrb_X');
     fprintf(fID,'*******************************************************************************\n');
     fprintf(fID,'summary of orbital contributions (beta)\n');
     fprintf(fID,'*******************************************************************************\n');
-    a=[Thbcomp.Properties.VariableNames;{'--','---','-----------','-------','------','----------'};Thbcomp{:,:}];
+    a=[Thbcomp.Properties.VariableNames;{'--','---','-------','------','----------','--------------'};Thbcomp{:,:}];
     fprintf(fID,' \n');
-    fprintf(fID,'%+5s %+3s %+11s %+6s %+6s %s\n',a.');
+    fprintf(fID,'%+5s %+3s %+7s %+6s %-10s %+14s\n',a.');
     fprintf(fID,' \n');
     fprintf(fID,'*******************************************************************************\n');
     fprintf(fID,'summary of element contributions to orbitals (beta)\n');
     fprintf(fID,'*******************************************************************************\n');
-    Thbcomp = Thbcomp(Thbcomp{:,1} ~= "",:);
-    Thbcomp = sortrows(Thbcomp,[2 4 5],{'descend' 'ascend' 'ascend'});
-    Thbcomp = movevars(Thbcomp,{'No','Occ','Energy'},'After','Cntrb_X');
-    a=[Thbcomp.Properties.VariableNames;{'-------','------','----------','--','---','----------'};Thbcomp{:,:}];
+    Thbecomp.Properties.VariableNames={'No', 'Occ', 'Orbital_Energy', 'Element', 'Cntrb','Cntrb_X'};
+    Thbecomp = sortrows(Thbecomp,[2 4 5],{'descend' 'ascend' 'ascend'});
+    Thbecomp = movevars(Thbecomp,{'No','Occ','Orbital_Energy'},'After','Cntrb_X');
+    a=[Thbecomp.Properties.VariableNames;{'-------','------','----------','--','---','--------------'};Thbecomp{:,:}];
     fprintf(fID,' \n');
-    fprintf(fID,'%+7s %+6s %+10s %+4s %+3s %+11s\n',a.');
+    fprintf(fID,'%+7s %+6s %-10s %+4s %+3s %+14s\n',a.');
     fprintf(fID,' \n');
 end
 
