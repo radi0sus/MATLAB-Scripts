@@ -67,7 +67,7 @@ clear all;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% options
 orbitals_to_analyze = 'HOMO+-10';
-%orbitals_to_analyze = 1:10;
+%orbitals_to_analyze = 0:10;
 %orbitals_to_analyze = 'all';
 threshold = 5;
 beta_orbitals = 1;
@@ -86,6 +86,9 @@ Thecomp=[];
 Thbcomp=[];
 Thbecomp=[];
 hashmark=[];
+hashmark_anum=[];
+Thcomp_anum=[];
+Thbcomp_anum=[];
 % end variables
 
 % open the output file
@@ -320,6 +323,22 @@ for i = loop_start:loop_end
     Thecomp = [Thecomp;Thmcomp];
     hashmark=[];
     %%%
+    Thmcomp_anum=varfun(@sum,orbital_a(i+1).T,'InputVariables','aX','GroupingVariables',{'aNum','aName'});
+    [numr_anum, numc_anum] = size(Thmcomp_anum);
+    orbNum_anum = [repmat(i,1,numr_anum)].';
+    orbOcc_anum = [repmat(orbital_a(i+1).occ,1,numr_anum)].';
+    orbEn_anum = [repmat(orbital_a(i+1).en,1,numr_anum)].';
+    Thmcomp_anum = addvars(Thmcomp_anum,orbNum_anum,orbOcc_anum,orbEn_anum,'Before','aNum');
+    for k_anum = 1:numr_anum
+        hashmark_anum = [string(hashmark_anum);string(repmat('*',1,round(Thmcomp_anum.sum_aX(k_anum)/10)))];
+    end
+    Thmcomp_anum = addvars(Thmcomp_anum,hashmark_anum,'After','sum_aX');
+    Thmcomp_anum = removevars(Thmcomp_anum,'GroupCount');
+    Thmcomp_anum = Thmcomp_anum(Thmcomp_anum{:,6} > threshold,:);
+    %Thcomp = [Thcomp;{"","","","","",""};Thmcomp];
+    Thcomp_anum = [Thcomp_anum;Thmcomp_anum];
+    hashmark_anum=[];
+    %%%
     % this tables will be finally printed in the output file
     a=[Tecomp.Properties.VariableNames;{'-------','----------','------------'};Tecomp{:,:}];
     fprintf(fID,' \n');
@@ -376,10 +395,24 @@ if beta_orbitals && spin_down_detected
         Thmcomp = addvars(Thmcomp,hashmark,'After','sum_aX');
         Thmcomp = removevars(Thmcomp,'GroupCount');
         Thmcomp = Thmcomp(Thmcomp{:,5} > threshold,:);
-        %Thbcomp = [Thbcomp;{"","","","","",""};Thmcomp];
         Thbcomp = [Thbcomp;Thmcomp;{"","","","","",""}];
         Thbecomp = [Thbecomp;Thmcomp];
         hashmark=[];
+        %%%
+        Thmcomp_anum=varfun(@sum,orbital_b(i+1).T,'InputVariables','aX','GroupingVariables',{'aNum','aName'});
+        [numr_anum, numc_anum] = size(Thmcomp_anum);
+        orbNum_anum = [repmat(i,1,numr_anum)].';
+        orbOcc_anum = [repmat(orbital_b(i+1).occ,1,numr_anum)].';
+        orbEn_anum = [repmat(orbital_b(i+1).en,1,numr_anum)].';
+        Thmcomp_anum = addvars(Thmcomp_anum,orbNum_anum,orbOcc_anum,orbEn_anum,'Before','aNum');
+        for k_anum = 1:numr_anum
+            hashmark_anum = [string(hashmark_anum);string(repmat('*',1,round(Thmcomp_anum.sum_aX(k_anum)/10)))];
+        end
+        Thmcomp_anum = addvars(Thmcomp_anum,hashmark_anum,'After','sum_aX');
+        Thmcomp_anum = removevars(Thmcomp_anum,'GroupCount');
+        Thmcomp_anum = Thmcomp_anum(Thmcomp_anum{:,6} > threshold,:);
+        Thbcomp_anum = [Thbcomp_anum;Thmcomp_anum];
+        hashmark_anum=[];
         %%%
         % this tables will be finally printed in the output file
         a=[Tecomp.Properties.VariableNames;{'-------','----------','------------'};Tecomp{:,:}];
@@ -420,6 +453,16 @@ a=[Thecomp.Properties.VariableNames;{'-------','------','----------','--','---',
 fprintf(fID,' \n');
 fprintf(fID,'%+7s %+6s %-10s %+4s %+3s %+14s\n',a.');
 fprintf(fID,' \n');
+Thcomp_anum.Properties.VariableNames={'OrbNo', 'Occ', 'Orbital_Energy', 'AtomNo','Element','Cntrb','Cntrb_X'};
+Thcomp_anum = sortrows(Thcomp_anum,[2 4 5],{'descend' 'ascend' 'ascend'});
+Thcomp_anum = movevars(Thcomp_anum,{'OrbNo','Occ','Orbital_Energy'},'After','Cntrb_X');
+fprintf(fID,'*******************************************************************************\n');
+fprintf(fID,'summary of atom contributions to orbitals\n');
+fprintf(fID,'*******************************************************************************\n');
+a=[Thcomp_anum.Properties.VariableNames;{'------','-------','------','----------','-----','---','--------------'};Thcomp_anum{:,:}];
+fprintf(fID,' \n');
+fprintf(fID,'%+6s %+7s %+6s %-10s %+5s %+3s %+14s\n',a.');
+fprintf(fID,' \n');
 
 if beta_orbitals && spin_down_detected
     Thbcomp.Properties.VariableNames={'No', 'Occ', 'Orbital_Energy', 'Element', 'Cntrb','Cntrb_X'};
@@ -440,6 +483,16 @@ if beta_orbitals && spin_down_detected
     a=[Thbecomp.Properties.VariableNames;{'-------','------','----------','--','---','--------------'};Thbecomp{:,:}];
     fprintf(fID,' \n');
     fprintf(fID,'%+7s %+6s %-10s %+4s %+3s %+14s\n',a.');
+    fprintf(fID,' \n');
+    Thbcomp_anum.Properties.VariableNames={'OrbNo', 'Occ', 'Orbital_Energy', 'AtomNo','Element','Cntrb','Cntrb_X'};
+    Thbcomp_anum = sortrows(Thbcomp_anum,[2 4 5],{'descend' 'ascend' 'ascend'});
+    Thbcomp_anum = movevars(Thbcomp_anum,{'OrbNo','Occ','Orbital_Energy'},'After','Cntrb_X');
+    fprintf(fID,'*******************************************************************************\n');
+    fprintf(fID,'summary of atom contributions to orbitals (beta)\n');
+    fprintf(fID,'*******************************************************************************\n');
+    a=[Thbcomp_anum.Properties.VariableNames;{'------','-------','------','----------','-----','---','--------------'};Thbcomp_anum{:,:}];
+    fprintf(fID,' \n');
+    fprintf(fID,'%+6s %+7s %+6s %-10s %+5s %+3s %+14s\n',a.');
     fprintf(fID,' \n');
 end
 
