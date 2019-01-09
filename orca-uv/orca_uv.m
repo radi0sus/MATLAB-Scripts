@@ -84,11 +84,17 @@ if nm
     w = w_nm;
     add_to_max_x = add_to_max_x_nm;
     start_x = start_x_nm;
+    box_start_x = 0;
 else
     x = x_wn;
     w = w_wn;
     add_to_max_x = add_to_max_x_wn;
     start_x = start_x_wn;
+    if hiwn_to_lown
+        box_start_x = start_x_wn;
+    else
+        box_start_x = 0;
+    end
 end
 
 % x_0 should not be lt 0 or exceed x_max 
@@ -241,53 +247,53 @@ st.Color=[0 0 0];
 
 % plot a box 
 if gaussian_ls && lorentzian_ls == 0 && pvoigt_ls == 0
-    rectangle('Position',[0 0 max(x)+add_to_max_x max(gauss_sum)+yhs_mg]);
+    rectangle('Position',[box_start_x 0 max(x)+add_to_max_x max(gauss_sum)+yhs_mg]);
     ylim([0 max(gauss_sum)+yhs_mg]);
 end
 if lorentzian_ls && gaussian_ls == 0 && pvoigt_ls == 0
-    rectangle('Position',[0 0 max(x)+add_to_max_x max(lorentz_sum)+yhs_ml]);
+    rectangle('Position',[box_start_x 0 max(x)+add_to_max_x max(lorentz_sum)+yhs_ml]);
     ylim([0 max(lorentz_sum)+yhs_ml]);
 end
 if pvoigt_ls && gaussian_ls == 0 && lorentzian_ls == 0
-    rectangle('Position',[0 0 max(x)+add_to_max_x max(pvoigt_sum)+yhs_pv]);
+    rectangle('Position',[box_start_x 0 max(x)+add_to_max_x max(pvoigt_sum)+yhs_pv]);
     ylim([0 max(pvoigt_sum)+yhs_pv]);
 end
 if lorentzian_ls && gaussian_ls && pvoigt_ls == 0
     if max(gauss_sum) > max(lorentz_sum)
-        rectangle('Position',[0 0 max(x)+add_to_max_x max(gauss_sum)+yhs_mg]);
+        rectangle('Position',[box_start_x 0 max(x)+add_to_max_x max(gauss_sum)+yhs_mg]);
         ylim([0 max(gauss_sum)+yhs_mg]);
     else
-        rectangle('Position',[0 0 max(x)+add_to_max_x max(lorentz_sum)+yhs_ml]);
+        rectangle('Position',[box_start_x 0 max(x)+add_to_max_x max(lorentz_sum)+yhs_ml]);
         ylim([0 max(lorentz_sum)+yhs_ml]);
     end
 end
 if lorentzian_ls && pvoigt_ls && gaussian_ls == 0
     if max(pvoigt_sum) > max(lorentz_sum)
-        rectangle('Position',[0 0 max(x)+add_to_max_x max(pvoigt_sum)+yhs_pv]);
+        rectangle('Position',[box_start_x 0 max(x)+add_to_max_x max(pvoigt_sum)+yhs_pv]);
         ylim([0 max(pvoigt_sum)+yhs_pv]);
     else
-        rectangle('Position',[0 0 max(x)+add_to_max_x max(lorentz_sum)+yhs_ml]);
+        rectangle('Position',[box_start_x 0 max(x)+add_to_max_x max(lorentz_sum)+yhs_ml]);
         ylim([0 max(lorentz_sum)+yhs_ml]);
     end
 end
 if pvoigt_ls && gaussian_ls && lorentzian_ls == 0
     if max(gauss_sum) > max(pvoigt_sum)
-        rectangle('Position',[0 0 max(x)+add_to_max_x max(gauss_sum)+yhs_mg]);
+        rectangle('Position',[box_start_x 0 max(x)+add_to_max_x max(gauss_sum)+yhs_mg]);
          ylim([0 max(gauss_sum)+yhs_mg]);
     else
-        rectangle('Position',[0 0 max(x)+add_to_max_x max(pvoigt_sum)+yhs_pv]);
+        rectangle('Position',[box_start_x 0 max(x)+add_to_max_x max(pvoigt_sum)+yhs_pv]);
         ylim([0 max(pvoigt_sum)+yhs_pv]);
     end
 end
 if pvoigt_ls && gaussian_ls && lorentzian_ls
     if max(gauss_sum) > max(pvoigt_sum) && max(gauss_sum) > max(lorentz_sum)
-        rectangle('Position',[0 0 max(x)+add_to_max_x max(gauss_sum)+yhs_mg]);
+        rectangle('Position',[box_start_x 0 max(x)+add_to_max_x max(gauss_sum)+yhs_mg]);
         ylim([0 max(gauss_sum)+yhs_mg]);
     elseif max(pvoigt_sum) > max(gauss_sum) && max(pvoigt_sum) > max(lorentz_sum)
-        rectangle('Position',[0 0 max(x)+add_to_max_x max(pvoigt_sum)+yhs_pv]);
+        rectangle('Position',[box_start_x 0 max(x)+add_to_max_x max(pvoigt_sum)+yhs_pv]);
         ylim([0 max(pvoigt_sum)+yhs_pv]);
     elseif max(lorentz_sum) > max(gauss_sum) && max(lorentz_sum) > max(pvoigt_sum)
-        re=rectangle('Position',[0 0 max(x)+add_to_max_x max(lorentz_sum)+yhs_ml]);
+        re=rectangle('Position',[box_start_x 0 max(x)+add_to_max_x max(lorentz_sum)+yhs_ml]);
         ylim([0 max(lorentz_sum)+yhs_ml]);
     end
 end
