@@ -1,6 +1,8 @@
 % Analyzes orbitals from ORCA output files.
 % ORCA: https://orcaforum.kofo.mpg.de
 % Contributions of certain atoms or elements to orbitals are investigated.
+% In summary the script adds up the single contributions from atoms or  
+% elements of a specific orbital. 
 % At the moment only 'LOEWDIN REDUCED ORBITAL POPULATIONS PER MO' are supported.
 % 
 % Use the '!LargePrint' option of ORCA.
@@ -12,8 +14,7 @@
 %    - You need write permissions!
 %    - Previous 'orb-analysis.txt' file will be overwritten!
 %
-% 
-% options:
+% Options:
 %
 % orbitals_to_analyze:
 % --------------------
@@ -45,13 +46,13 @@
 % 
 % 'threshold' = print orbitals above the given threshold
 %  example 1: threshold = 5.2
-%             Every atom contribution to a specific orbital will be
+%             Every atom/element contribution to a specific orbital will be
 %             printed in the output file, if the threshold of the 
 %             contribution is greater than 5.2.
 %            
 %  example 2: threshold = -1
-%             Every atom contribution to a specific orbital listed in 
-%             the ORCA output file will be printed.
+%             Every atom/element contribution to a specific orbital listed
+%             in the ORCA output file will be printed.
 %             
 % 
 % beta_orbitals:
@@ -70,6 +71,7 @@ orbitals_to_analyze = 'HOMO+-10';
 %orbitals_to_analyze = 0:10;
 %orbitals_to_analyze = 'all';
 threshold = 5;
+%threshold = -1;
 beta_orbitals = 1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end options
 
@@ -81,6 +83,7 @@ B = [];
 k = 1;
 l = 0;
 spin_down_detected = 0;
+loewdin_pos =0;
 Thcomp=[];
 Thecomp=[];
 Thbcomp=[];
@@ -99,6 +102,8 @@ if isequal(orca_out_file,0)
 else
     orca_out_file_ID=fopen(fullfile(path,orca_out_file),'r');
 end
+
+disp('Analyzing orbitals. Please be patient.');
 
 % look for string 'ORBITAL ENERGIES' in orca.out
 % determine the total number of orbitals and the number of the HOMO
@@ -143,7 +148,11 @@ while ~feof(orca_out_file_ID)
 end
 
 % move to the position
-fseek(orca_out_file_ID,loewdin_pos,'bof');
+if loewdin_pos
+    fseek(orca_out_file_ID,loewdin_pos,'bof');
+else
+    error('LOEWDIN REDUCED ORBITAL POPULATIONS PER MO not found!') % error message > end prgm
+end
 
 % read all orbitals into struct
 if isempty(is_loewdin)
@@ -259,7 +268,7 @@ analysis_out_file=[path 'orb-analysis.txt'];
 fID = fopen(analysis_out_file,'w');
 
 fprintf(fID,'===============================================================================\n');
-fprintf(fID,'orbital analysis of %s\n',orca_out_file);
+fprintf(fID,'orbital analysis (from Loewdin red. orb. pop. per mo) of %s\n',orca_out_file);
 
 if spin_down_detected
     fprintf(fID,'total no. of orbitals: %d\n',(tot_nr_orb-1)*2);
@@ -267,7 +276,7 @@ else
     fprintf(fID,'total no. of orbitals: %d\n',tot_nr_orb-1);
 end
 fprintf(fID,'HOMO no.: %d\n',homo_nr);
-fprintf(fID,'orbitals to analyze: %d...%d\n',loop_start,loop_end);
+fprintf(fID,'analyzed orbitals: %d...%d\n',loop_start,loop_end);
 if spin_down_detected
     fprintf(fID,'beta orbitals detected: yes\n');
 else
