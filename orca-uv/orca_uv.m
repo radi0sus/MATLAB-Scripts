@@ -1,7 +1,8 @@
-% plots absorption spectrum from orca.out
-% stick spectra + Gaussian, Lorentzian & Pseudo-Voigt line broadening
-% nm or cm^-1^ scale
-% several options
+% Plots absorption spectrum from ORCA output files.
+% ORCA: https://orcaforum.kofo.mpg.de
+% - stick spectra + Gaussian, Lorentzian & Pseudo-Voigt line broadening
+% - nm or cm^-1^ scale
+% - several options
 % 
 % 1. Check the options.
 % 2. Run the script with F5. 
