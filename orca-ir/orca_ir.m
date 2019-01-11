@@ -1,6 +1,7 @@
-% plots IR spectrum from orca.out
-% stick spectra + Gaussian, Lorentzian & Pseudo-Voigt line broadening
-% several options
+% Plots IR spectrum from from ORCA output files.
+% ORCA: https://orcaforum.kofo.mpg.de
+% - stick spectra + Gaussian, Lorentzian & Pseudo-Voigt line broadening
+% - several options
 %
 % 1. Check the options.
 % 2. Run the script with F5. 
