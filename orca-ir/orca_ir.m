@@ -25,7 +25,7 @@ pvoigt_ls = 0;                  % Pseudo-Voigt line shape
 gauss_area = 1;                 % area plot for Gaussian - else line
 lorentz_area = 0;               % area plot for Lorentzian - else line
 pvoigt_area = 0;                % area plot for Pseudo-Voigt - else line
-gauss_single = 0;               % plot Gaussian for every single peak
+gauss_single = 1;               % plot Gaussian for every single peak
 lorentz_single = 0;             % plot Lorentzian for every single peak
 pvoigt_single = 0;              % plot Pseudo-Voigt for every single peak
 transmission_style = 0;         % plot transmission spectra
@@ -97,8 +97,9 @@ if transmission_style
     set(gca,'YDir','reverse'); 
 end
 
-xlim([0 max(x)+250]);   % x plot limits
-z=0:1:max(x)+250;       % x limits for gaussian, lorentzian or pseudo-voigt
+xlim([0 max(x)+250]);    % x plot limits
+%z=0:1:max(x)+250;       % x limits for gaussian, lorentzian or pseudo-voigt
+z=1:max(x)+250;          % x limits for gaussian, lorentzian or pseudo-voigt
 
 % plot gaussian for every single peak
 if gauss_single
