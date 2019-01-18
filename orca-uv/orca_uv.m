@@ -123,7 +123,8 @@ if hiwn_to_lown && nm ~= 1
 end
 
 xlim([start_x max(x)+add_to_max_x]); % x plot limits
-z=0:1:max(x)+add_to_max_x;     % x limits for gaussian, lorentzian or pseudo-voigt
+%z=0:1:max(x)+add_to_max_x;  % x limits for gaussian, lorentzian or pseudo-voigt
+z=1:max(x)+add_to_max_x;     % x limits for gaussian, lorentzian or pseudo-voigt
 
 % plot gaussian for every single peak
 if gauss_single
